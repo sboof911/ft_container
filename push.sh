@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#to run the scipt :   sh push.sh Path TimeToSleep
 while true
 do
     cp $1/* .
