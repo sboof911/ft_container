@@ -10,5 +10,5 @@ do
     git commit -m "all good"
     git push
 
-    sleep[Time]
+    sleep [Time]
 done
