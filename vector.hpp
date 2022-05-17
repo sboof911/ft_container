@@ -91,16 +91,11 @@ class   vector
             return (*this);
         };
 
-                        //**********************************************             OPERATORS                      **********************************************
-        reference operator[](size_t index)
-        {
-            //if (index < vector_size)
-                return arg[index];
-            
-        }
+                        //**********************************************             ITERATORS                      **********************************************
 
 
-                        //**********************************************             Capacity                       **********************************************
+
+                        //**********************************************             CAPACITY                       **********************************************
 
                                                 
         size_type      size() const {return vector_size;};
@@ -167,8 +162,44 @@ class   vector
         size_type   capacity() const { return (vector_capacity);};
         bool        empty() const { return (vector_size == 0 ? true : false);};
 
-                        //**********************************************             ELEMENT ACCESS                 **********************************************
 
+                        //**********************************************             ELEMENT ACCESS                 **********************************************
+        
+        
+        reference operator[](size_t index)
+        {
+            //if (index < vector_size)  excepetion i9dr
+                return arg[index];
+        };
+        const_reference operator[] (size_type n) const
+        {
+            //if (index < vector_size)  excepetion i9dr
+                return arg[index];
+        };
+        reference at (size_type n)
+        {
+
+        };
+        const_reference at (size_type n) const
+        {
+
+        };
+        reference front()
+        {
+
+        };
+        const_reference front() const
+        {
+
+        };
+        reference back()
+        {
+            
+        };
+        const_reference back() const
+        {
+            
+        };
 
 
                         //**********************************************             MODIFIERS                      **********************************************
