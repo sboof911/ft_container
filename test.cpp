@@ -1,17 +1,16 @@
-#include "vector.hpp"
+#include <iostream>
+#include <memory>
+#include <vector>
+using namespace std;
 
-
-// int     main()
+// int main()
 // {
-//     vector<int>     help(5);
+//     allocator<int> tmp;
+//     int *i = tmp.allocate(2);
+//     tmp.construct(i, 5);
+//     cout << *i <<endl;
 
-//     std::cout << help.size() << std::endl;
-//     help.resize(10);
-//     std::cout << help.size() << std::endl;
-//     std::cout << help.capacity() << std::endl;
-//     help.push_back(5);
-//     std::cout << help.size() << std::endl;
-//     std::cout << help.capacity() << std::endl;
+//     vector<int> help;
 // }
 
 int main ()

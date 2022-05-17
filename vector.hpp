@@ -77,8 +77,11 @@ class   vector
         }
         vector& operator=(const vector& x)
         {
-            clear();
-            myAlloc.deallocate(arg, vector_capacity);
+            if (vector_capacity)
+            {    
+                clear();
+                myAlloc.deallocate(arg, vector_capacity);
+            }
             this->myAlloc = x.myAlloc;
             this->vector_size = x.vector_size;
             this->vector_capacity = x.vector_capacity;
@@ -128,8 +131,11 @@ class   vector
                 vector*   help;
 
                 help = this;
-                clear();
-                myAlloc.deallocate(arg, vector_capacity);
+                if (vector_capacity)
+                {
+                    clear();
+                    myAlloc.deallocate(arg, vector_capacity);
+                }
                 vector_size = n;
                 vector_capacity = _get_capacity_bit(n);
                 arg = myAlloc.allocate(vector_capacity);
@@ -146,8 +152,11 @@ class   vector
                 vector*   help;
 
                 help = this;
-                clear();
-                myAlloc.deallocate(arg, vector_capacity);
+                if (vector_capacity)
+                {
+                    clear();
+                    myAlloc.deallocate(arg, vector_capacity);
+                }
                 vector_capacity = n;
                 vector_size = help->size();
                 arg = myAlloc.allocate(vector_capacity);
@@ -165,7 +174,16 @@ class   vector
                         //**********************************************             MODIFIERS                      **********************************************
         void assign (size_type n, const value_type& val)
         {
-            
+            if (vector_capacity)
+            {
+                clear();
+                myAlloc.deallocate(arg, vector_capacity);
+            }
+            vector_capacity = n;
+            vector_size = n;
+            arg = myAlloc.allocate(vector_capacity);
+            for(size_type i = 0; i < vector_size; i++)
+                myAlloc.construct(&arg[i], val);
         };
         void        push_back (const value_type& val)
         {
@@ -184,8 +202,11 @@ class   vector
             vector  help;
 
             help = *this;
-            clear();
-            myAlloc.deallocate(arg, vector_capacity);
+            if (vector_capacity)
+            {
+                clear();
+                myAlloc.deallocate(arg, vector_capacity);
+            }
             vector_capacity = help.vector_capacity;
             vector_size = help.vector_size--;
             arg = myAlloc.allocate(vector_capacity);
