@@ -2,9 +2,9 @@
 
 while true
 do
-    cp ../ft_container/* .
+    cp $1/* .
     git add *
     git commit -m "all good"
     git push
-    sleep 10m
+    sleep $2
 done
