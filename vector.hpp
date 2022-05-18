@@ -17,6 +17,7 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include <stdexcept>
 
 template < class T, class Alloc = std::allocator<T> >
 class   vector
@@ -123,20 +124,22 @@ class   vector
             }
             else
             {
-                vector*   help;
-
-                help = this;
-                if (vector_capacity)
-                {
-                    clear();
-                    myAlloc.deallocate(arg, vector_capacity);
-                }
+                int     SizePreVec = 0;
                 vector_size = n;
                 vector_capacity = _get_capacity_bit(n);
+                if (arg)
+                {
+                    vector*   help;
+
+                    help = this;
+                    clear();
+                    myAlloc.deallocate(arg, vector_capacity);
+                    for (size_type i = 0; i < help->size(); i++)
+                        myAlloc.construct(&arg[i], help->arg[i]);
+                    SizePreVec = help->size();
+                }
                 arg = myAlloc.allocate(vector_capacity);
-                for (size_type i = 0; i < help->size(); i++)
-                    myAlloc.construct(&arg[i], help->arg[i]);
-                for(size_type i = help->size(); i < n; i++)
+                for(size_type i = SizePreVec; i < n; i++)
                     myAlloc.construct(&arg[i], val);
             }
         };
@@ -165,40 +168,50 @@ class   vector
 
                         //**********************************************             ELEMENT ACCESS                 **********************************************
         
-        
+        // class out_of_range : public logic_error
+        // {
+        //     public:
+        //       explicit out_of_range (const std::string& what_arg) throw()
+        //       {
+        //         //   return ("vector::_M_range_check");
+        //       };
+        // };
+
         reference operator[](size_t index)
         {
-            //if (index < vector_size)  excepetion i9dr
                 return arg[index];
         };
         const_reference operator[] (size_type n) const
         {
-            //if (index < vector_size)  excepetion i9dr
                 return arg[index];
         };
-        reference at (size_type n)
-        {
-
-        };
-        const_reference at (size_type n) const
-        {
-
-        };
+        // reference at (size_type n)
+        // {
+        //     if (n >= vector_size)
+        //         throw std::out_of_range();
+        //     return arg[n];
+        // };
+        // const_reference at (size_type n) const
+        // {
+        //     if (n >= vector_size)
+        //         throw std::out_of_range();
+        //     return arg[n];
+        // };
         reference front()
         {
-
+            return (arg[0]);
         };
         const_reference front() const
         {
-
+            return (arg[0]);
         };
         reference back()
         {
-            
+            return (arg[vector_size - 1]);
         };
         const_reference back() const
         {
-            
+            return (arg[vector_size - 1]);
         };
 
 
@@ -224,9 +237,7 @@ class   vector
                 vector_size++;
             }
             else
-            {
                 resize(vector_size + 1, val);
-            }
         };
         void        pop_back()
         {

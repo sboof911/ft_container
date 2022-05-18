@@ -16,15 +16,16 @@
 
 int main ()
 {
-std::vector<int>::size_type sz;
+  vector<int> myvector;
 
-  std::vector<int> foo;
-  std::vector<int>::iterator it;
-  
-  foo.assign(7, 100);
-  std::cout << foo.size() << " and " << foo.capacity() << std::endl;
-  std::cout << foo[5] << std::endl;
-  foo.assign(10, 22);
-  std::cout << foo.size() << " and " << foo.capacity() << std::endl;
-  std::cout << foo[5] << std::endl;
+  myvector.push_back(78);
+  myvector.push_back(16);
+
+  // now front equals 78, and back 16
+  std::cout << myvector.front() << " and " << myvector.back() << std::endl;
+  myvector.front() -= myvector.back();
+
+  std::cout << "myvector.front() is now " << myvector.front() << '\n';
+
+  return 0;
 }
