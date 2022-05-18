@@ -13,19 +13,18 @@
 //     std::cout << help.size() << std::endl;
 //     std::cout << help.capacity() << std::endl;
 // }
-
 int main ()
 {
-  vector<int> myvector;
+  vector<int> myvector (10);   // 10 zero-initialized ints
 
-  myvector.push_back(78);
-  myvector.push_back(16);
+  // assign some values:
+  for (unsigned i=0; i<myvector.size(); i++)
+    myvector.at(i)=i;
 
-  // now front equals 78, and back 16
-  std::cout << myvector.front() << " and " << myvector.back() << std::endl;
-  myvector.front() -= myvector.back();
-
-  std::cout << "myvector.front() is now " << myvector.front() << '\n';
+  std::cout << "myvector contains:";
+  for (unsigned i=0; i<myvector.size(); i++)
+    std::cout << ' ' << myvector.at(i);
+  std::cout << '\n';
 
   return 0;
 }

@@ -55,7 +55,7 @@ class   vector
 
     public :
 
-                        //**********************************************             MEMBER FUNCTIONS               **********************************************
+//**********************************************             MEMBER FUNCTIONS               **********************************************
 
 
         vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), arg(NULL), vector_size(0), vector_capacity(0){};
@@ -92,11 +92,11 @@ class   vector
             return (*this);
         };
 
-                        //**********************************************             ITERATORS                      **********************************************
+//**********************************************             ITERATORS                      **********************************************
 
 
 
-                        //**********************************************             CAPACITY                       **********************************************
+//**********************************************             CAPACITY                       **********************************************
 
                                                 
         size_type      size() const {return vector_size;};
@@ -166,16 +166,16 @@ class   vector
         bool        empty() const { return (vector_size == 0 ? true : false);};
 
 
-                        //**********************************************             ELEMENT ACCESS                 **********************************************
+//**********************************************             ELEMENT ACCESS                 **********************************************
         
-        // class out_of_range : public logic_error
-        // {
-        //     public:
-        //       explicit out_of_range (const std::string& what_arg) throw()
-        //       {
-        //         //   return ("vector::_M_range_check");
-        //       };
-        // };
+        class out_of_range : public std::exception
+        {
+            public:
+              virtual const char* what() const throw()
+              {
+                  return ("vector::_M_range_check");
+              };
+        };
 
         reference operator[](size_t index)
         {
@@ -185,18 +185,18 @@ class   vector
         {
                 return arg[index];
         };
-        // reference at (size_type n)
-        // {
-        //     if (n >= vector_size)
-        //         throw std::out_of_range();
-        //     return arg[n];
-        // };
-        // const_reference at (size_type n) const
-        // {
-        //     if (n >= vector_size)
-        //         throw std::out_of_range();
-        //     return arg[n];
-        // };
+        reference at (size_type n)
+        {
+            if (n >= vector_size)
+                throw out_of_range();
+            return arg[n];
+        };
+        const_reference at (size_type n) const
+        {
+            if (n >= vector_size)
+                throw out_of_range();
+            return arg[n];
+        };
         reference front()
         {
             return (arg[0]);
@@ -215,7 +215,7 @@ class   vector
         };
 
 
-                        //**********************************************             MODIFIERS                      **********************************************
+//**********************************************             MODIFIERS                      **********************************************
         void assign (size_type n, const value_type& val)
         {
             if (vector_capacity)
@@ -270,6 +270,13 @@ class   vector
             x = help;
         };
 
+
+//**********************************************             ALLOCATE                       **********************************************
+
+        allocator_type get_allocator() const
+        {
+            return (myAlloc);
+        };
 };
 
 #endif
