@@ -5,7 +5,7 @@ declare -i Time=$2
 help=$3
 if help
 then
-    comment=help
+    comment=$help
     echo $comment
 else
     comment="all_good"
