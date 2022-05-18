@@ -3,6 +3,7 @@
 #to run the scipt :   sh push.sh Path TimeToSleepInMinits 2
 declare -i Time=$2
 helpme=$3
+echo $helpme
 if $helpme
 then
     echo "IMIN1"
