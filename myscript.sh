@@ -5,6 +5,7 @@ declare -i Time=$2
 help=$3
 if help
 then
+    echo "IMIN"
     comment=help
 else
     comment="all_good"
