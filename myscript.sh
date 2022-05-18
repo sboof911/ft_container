@@ -5,9 +5,10 @@ declare -i Time=$2
 helpme=$3
 if helpme
 then
+    echo "IMIN1"
     comment=$helpme
 else
-    echo "IMIN"
+    echo "IMIN2"
     comment="all_good"
 fi
 Time=Time*60
