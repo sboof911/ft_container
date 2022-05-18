@@ -3,7 +3,7 @@
 #to run the scipt :   sh push.sh Path TimeToSleepInMinits 2
 declare -i Time=$2
 var=$3
-if $var
+if var
 then
     echo "IMIN1"
     comment=$var
