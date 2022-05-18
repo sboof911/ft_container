@@ -7,6 +7,7 @@ if helpme
 then
     comment=$helpme
 else
+    echo "IMIN"
     comment="all_good"
 fi
 Time=Time*60
