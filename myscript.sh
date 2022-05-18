@@ -4,12 +4,16 @@
 declare -i Time=$2
 declare var=$3
 
+if [ "$1" == "help" ]
+then
+    echo "                      $(tput setaf 3) THIS SCRIPT PUSH UR FOLDER TO UR GIT"
+    echo "$(tput setaf 1)use this command : sh myscript.sh $(tput setaf 6)[PATH OF DIRECTORY] [TIME TO SLEEP WITH MIN] [COMMENT](optionnel)"
+fi
+
 if [ -n "$var" ]
 then
-    echo "IMIN1"
     comment=$var
 else
-    echo "IMIN2"
     comment="all_good"
 fi
 Time=Time*60
