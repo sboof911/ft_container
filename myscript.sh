@@ -2,11 +2,10 @@
 
 #to run the scipt :   sh push.sh Path TimeToSleepInMinits 2
 declare -i Time=$2
-help=$3
-if help
+helpme=$3
+if helpme
 then
-    comment=$help
-    echo $comment
+    comment=$helpme
 else
     comment="all_good"
 fi
