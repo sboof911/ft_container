@@ -18,7 +18,11 @@
 #include <memory>
 #include <cmath>
 #include <stdexcept>
+#include "iterator.hpp"
+#include "iterator_traits.hpp"
 
+namespace ft
+{
 template < class T, class Alloc = std::allocator<T> >
 class   vector
 {
@@ -32,6 +36,8 @@ class   vector
         typedef typename allocator_type::size_type       size_type;
         typedef typename allocator_type::pointer         pointer;
         typedef typename allocator_type::const_pointer   const_pointer;
+        typedef typename ft::iterator<value_type>        iterator;
+        typedef typename ft::iterator<const value_type>  const_iterator;
 
     protected :
         allocator_type      myAlloc;
@@ -278,5 +284,6 @@ class   vector
             return (myAlloc);
         };
 };
+}
 
 #endif

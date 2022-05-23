@@ -6,69 +6,159 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 20:09:33 by amaach            #+#    #+#             */
-/*   Updated: 2022/05/18 20:50:08 by amaach           ###   ########.fr       */
+/*   Updated: 2022/05/23 18:17:41 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_
-#define ITERATOR_
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
+#include <iostream>
+#include <vector>
+#include <memory>
+#include <cmath>
+#include <stdexcept>
 
-#include <stddef.h>
-
-
-template<class Iterator>
-struct iterator_traits
-{
-    typedef typename Iterator::difference_type difference_type;
-    typedef typename Iterator::value_type value_type;
-    typedef typename Iterator::pointer pointer;
-    typedef typename Iterator::reference reference;
-    typedef typename Iterator::iterator_category iterator_category;
-};
-
-template<class T>
-struct iterator_traits<T*>
-{
-    typedef ptrdiff_t difference_type;
-    typedef T value_type;
-    typedef T* pointer;
-    typedef T& reference;
-    typedef random_access_iterator_tag iterator_category;
-};
-
-template<class Category, class T, class Distance = ptrdiff_t,
-         class Pointer = T*, class Reference = T&>
-struct iterator
-{
-    typedef T         value_type;
-    typedef Distance  difference_type;
-    typedef Pointer   pointer;
-    typedef Reference reference;
-    typedef Category  iterator_category;
-};
-
-template <class T>
-class myIterator
-{
-    public :
-        typedef typename iterator_traits<T>::iterator_category iterator_category;
-        typedef typename iterator_traits<T>::value_type value_type,
-        typedef typename iterator_traits<T>::difference_type difference_type,
-        typedef typename iterator_traits<T>::pointer pointer,
-        typedef typename iterator_traits<T>::reference reference>
-        
+namespace ft{
     
-    private:
-        pointer  MyIter;
-
+   template <class T>
+    class iterator 
+    {
     public:
-        myIterator(){};
-        myIterator(value_type it) : MyIter(&it);
-        myIterator(const value_type& it){ *this = it;};
-        ~myIterator(){};
-        
-};
+        typedef T value_type;
+        typedef std::ptrdiff_t difference_type;
+        typedef T *pointer;
+        typedef T &reference;
+        typedef std::random_access_iterator_tag iterator_category;
 
+    private:
+        pointer _ptr;
+    public:
+        iterator() : _ptr(NULL) {}
+        iterator(pointer ptr) : _ptr(ptr) {}
+        ~iterator(){}
+        iterator(const iterator& copy)
+        {
+            *this = copy;
+        }
+        iterator &operator=(const iterator &obj)
+        {
+            this->_ptr = obj._ptr;
+            return (*this);
+        }
+
+        iterator &operator++()
+        {
+            this->_ptr++;
+            return *this;
+        }
+
+        iterator operator++(int)
+        {
+            iterator tmp(*this);
+            this->_ptr++;
+            return tmp;
+        }
+
+        iterator &operator--()
+        {
+            _ptr--;
+            return *this;
+        }
+
+        iterator operator--(int)
+        {
+            iterator tmp = *this;
+            _ptr--;
+            return tmp;
+        }
+
+        template <class U>
+        bool operator==(const iterator<U> &obj) const
+        {
+            return (this->_ptr == obj._ptr);
+        }
+
+        template <class U>
+        bool operator!=(const iterator<U> &obj) const
+        {
+            return (this->_ptr != obj._ptr);
+        }
+
+        template <class U>
+        bool operator<=(const iterator<U> &obj) const
+        {
+            return (this->_ptr <= obj._ptr);
+        }
+
+        template <class U>
+        bool operator<(const iterator<U> &obj) const
+        {
+            return (this->_ptr < obj._ptr);
+        }
+
+        template <class U>
+        bool operator>(const iterator<U> &obj) const
+        {
+            return (this->_ptr > obj._ptr);
+        }
+
+        template <class U>
+        bool operator>=(const iterator<U> &obj) const
+        {
+            return (this->_ptr >= obj._ptr);
+        }
+        // operator - returns distance between two iterators
+        difference_type operator-(const iterator &obj) const
+        {
+            //number of cases betwen to cases;
+            return (this->_ptr - obj._ptr);
+        }
+   
+        reference operator*()
+        {
+            //return the value of the adresse pointed
+            return *this->_ptr;
+        }
+      
+        pointer operator->() const
+        {
+            //  returns the address of the object
+            return this->_ptr; 
+        }
+
+        iterator operator+(difference_type n) const
+        {
+            return this->_ptr + n;
+        }
+    
+        iterator operator-(difference_type n) const
+        {
+            return this->_ptr - n;
+        }
+
+        reference operator[](int n) const
+        {
+            return this->_ptr[n];
+        }
+
+        iterator &operator+=(int n)
+        {
+            this->_ptr += n;
+            return *this;
+        }
+
+        iterator &operator-=(int n)
+        {
+            this->_ptr -= n;
+            return *this;
+        }
+
+        // operator iterator<const value_type>()
+        // {
+        //     return iterator<const value_type>(_ptr);
+        // }
+    };
+}
 
 #endif
