@@ -51,9 +51,11 @@ class   vector
             int i = 0;
             if (n == 0)
                 return (0);
+            if (n == 1)
+                return (1);
             while (1)
             {
-                if ((n >= pow(2, i) && n < pow(2, i + 1)))
+                if ((n > pow(2, i) && n <= pow(2, i + 1)))
                     return (pow(2, i + 1));
                 i++;
             }
@@ -65,6 +67,7 @@ class   vector
 
 
         vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), arg(NULL), vector_size(0), vector_capacity(0){};
+        
         vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : vector_size(n), myAlloc(alloc), vector_capacity(n)
         {
             arg = myAlloc.allocate(vector_size);
@@ -74,18 +77,21 @@ class   vector
                 myAlloc.construct(&arg[i], val);
             }
         };
+
         vector (const vector& x) {*this = x;};
+
         ~vector()
         {
             if (vector_capacity > 0)
             {
                 myAlloc.deallocate(arg, vector_capacity);
             }
-        }
+        };
+
         vector& operator=(const vector& x)
         {
             if (vector_capacity)
-            {    
+            {
                 clear();
                 myAlloc.deallocate(arg, vector_capacity);
             }
@@ -100,13 +106,17 @@ class   vector
 
 //**********************************************             ITERATORS                      **********************************************
 
-
+        iterator    begin() {return (iterator(&arg[0]));};
+        
+        iterator    end() {return (iterator(&arg[vector_size - 1]));};
 
 //**********************************************             CAPACITY                       **********************************************
 
                                                 
         size_type      size() const {return vector_size;};
+
         size_type      max_size() const {};
+
         void        resize (size_type n, value_type val = value_type())
         {
             if (vector_capacity >= n)
@@ -130,45 +140,47 @@ class   vector
             }
             else
             {
-                int     SizePreVec = 0;
-                vector_size = n;
-                vector_capacity = _get_capacity_bit(n);
-                if (arg)
-                {
-                    vector*   help;
+                vector   help;
 
-                    help = this;
+                help = *this;
+                if (vector_capacity)
+                {
                     clear();
                     myAlloc.deallocate(arg, vector_capacity);
-                    for (size_type i = 0; i < help->size(); i++)
-                        myAlloc.construct(&arg[i], help->arg[i]);
-                    SizePreVec = help->size();
                 }
+                vector_size = n;
+                vector_capacity = _get_capacity_bit(n);
                 arg = myAlloc.allocate(vector_capacity);
-                for(size_type i = SizePreVec; i < n; i++)
+                for (size_type i = 0; i < help.size(); i++)
+                    myAlloc.construct(&arg[i], help.arg[i]);
+                for(size_type i = help.size(); i < n; i++)
                     myAlloc.construct(&arg[i], val);
             }
         };
+
         void        reserve (size_type n)
         {
             if (n > vector_capacity)
             {
-                vector*   help;
+                vector   help;
 
-                help = this;
+                help = *this;
                 if (vector_capacity)
                 {
                     clear();
                     myAlloc.deallocate(arg, vector_capacity);
                 }
                 vector_capacity = n;
-                vector_size = help->size();
+                vector_size = help.size();
                 arg = myAlloc.allocate(vector_capacity);
                 for(size_type i = 0; i < vector_size; i++)
-                    myAlloc.construct(&arg[i], help->arg[i]);
+                    myAlloc.construct(&arg[i], help.arg[i]);
             }
+            // else throw exeption
         };
+        
         size_type   capacity() const { return (vector_capacity);};
+        
         bool        empty() const { return (vector_size == 0 ? true : false);};
 
 
@@ -187,34 +199,41 @@ class   vector
         {
                 return arg[index];
         };
+        
         const_reference operator[] (size_type n) const
         {
                 return arg[index];
         };
+        
         reference at (size_type n)
         {
             if (n >= vector_size)
                 throw out_of_range();
             return arg[n];
         };
+        
         const_reference at (size_type n) const
         {
             if (n >= vector_size)
                 throw out_of_range();
             return arg[n];
         };
+        
         reference front()
         {
             return (arg[0]);
         };
+        
         const_reference front() const
         {
             return (arg[0]);
         };
+        
         reference back()
         {
             return (arg[vector_size - 1]);
         };
+        
         const_reference back() const
         {
             return (arg[vector_size - 1]);
@@ -222,6 +241,7 @@ class   vector
 
 
 //**********************************************             MODIFIERS                      **********************************************
+        
         void assign (size_type n, const value_type& val)
         {
             if (vector_capacity)
@@ -235,6 +255,7 @@ class   vector
             for(size_type i = 0; i < vector_size; i++)
                 myAlloc.construct(&arg[i], val);
         };
+        
         void        push_back (const value_type& val)
         {
             if (vector_capacity > vector_size)
@@ -245,6 +266,7 @@ class   vector
             else
                 resize(vector_size + 1, val);
         };
+        
         void        pop_back()
         {
             vector  help;
@@ -261,12 +283,14 @@ class   vector
             for(size_type i = 0; i < vector_size; i++)
                 arg[i] = help.arg[i];
         };
+        
         void        clear()
         {
             for(size_type i = 0; i < vector_size; i++)
                 myAlloc.destroy(arg + i);
             vector_size = 0;
         };
+        
         void        swap (vector& x)
         {
             vector help;

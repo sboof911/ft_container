@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   reverse_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 20:09:33 by amaach            #+#    #+#             */
-/*   Updated: 2022/05/24 12:08:21 by amaach           ###   ########.fr       */
+/*   Created: 2022/05/23 21:44:22 by amaach            #+#    #+#             */
+/*   Updated: 2022/05/23 21:47:03 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-#define ITERATOR_HPP
+#ifndef REVERSE_ITERATOR_HPP
+#define REVERSE_ITERATOR_HPP
 
 #include <iostream>
 #include <vector>
@@ -22,94 +22,54 @@
 namespace ft{
     
    template <class T>
-    class iterator 
+    class reverse_iterator 
     {
     public:
         typedef T value_type;
         typedef std::ptrdiff_t difference_type;
         typedef T *pointer;
         typedef T &reference;
-        typedef std::random_access_iterator_tag iterator_category;
+        typedef std::random_access_reverse_iterator_tag reverse_iterator_category;
 
     private:
         pointer _ptr;
     public:
-        iterator() : _ptr(NULL) {}
-        iterator(pointer ptr) : _ptr(ptr) {}
-        ~iterator(){}
-        iterator(const iterator& copy)
+        reverse_iterator() : _ptr(NULL) {}
+        reverse_iterator(pointer ptr) : _ptr(ptr) {}
+        ~reverse_iterator(){}
+        reverse_iterator(const reverse_iterator& copy)
         {
             *this = copy;
         }
-        iterator &operator=(const iterator &obj)
-        {
-            this->_ptr = obj._ptr;
-            return (*this);
-        }
 
-        iterator &operator++()
+        reverse_iterator &operator++()
         {
             this->_ptr++;
             return *this;
         }
 
-        iterator operator++(int)
+        reverse_iterator operator++(int)
         {
-            iterator tmp(*this);
+            reverse_iterator tmp(*this);
             this->_ptr++;
             return tmp;
         }
 
-        iterator &operator--()
+        reverse_iterator &operator--()
         {
             _ptr--;
             return *this;
         }
 
-        iterator operator--(int)
+        reverse_iterator operator--(int)
         {
-            iterator tmp = *this;
+            reverse_iterator tmp = *this;
             _ptr--;
             return tmp;
         }
 
-        template <class U>
-        bool operator==(const iterator<U> &obj) const
-        {
-            return (this->_ptr == obj._ptr);
-        }
-
-        template <class U>
-        bool operator!=(const iterator<U> &obj) const
-        {
-            return (this->_ptr != obj._ptr);
-        }
-
-        template <class U>
-        bool operator<=(const iterator<U> &obj) const
-        {
-            return (this->_ptr <= obj._ptr);
-        }
-
-        template <class U>
-        bool operator<(const iterator<U> &obj) const
-        {
-            return (this->_ptr < obj._ptr);
-        }
-
-        template <class U>
-        bool operator>(const iterator<U> &obj) const
-        {
-            return (this->_ptr > obj._ptr);
-        }
-
-        template <class U>
-        bool operator>=(const iterator<U> &obj) const
-        {
-            return (this->_ptr >= obj._ptr);
-        }
-        // operator - returns distance between two iterators
-        difference_type operator-(const iterator &obj) const
+        // operator - returns distance between two reverse_iterators
+        difference_type operator-(const reverse_iterator &obj) const
         {
             //number of cases betwen to cases;
             return (this->_ptr - obj._ptr);
@@ -127,12 +87,12 @@ namespace ft{
             return this->_ptr; 
         }
 
-        iterator operator+(difference_type n) const
+        reverse_iterator operator+(difference_type n) const
         {
             return this->_ptr + n;
         }
     
-        iterator operator-(difference_type n) const
+        reverse_iterator operator-(difference_type n) const
         {
             return this->_ptr - n;
         }
@@ -142,17 +102,22 @@ namespace ft{
             return this->_ptr[n];
         }
 
-        iterator &operator+=(int n)
+        reverse_iterator &operator+=(int n)
         {
             this->_ptr += n;
             return *this;
         }
 
-        iterator &operator-=(int n)
+        reverse_iterator &operator-=(int n)
         {
             this->_ptr -= n;
             return *this;
         }
+
+        // operator reverse_iterator<const value_type>()
+        // {
+        //     return reverse_iterator<const value_type>(_ptr);
+        // }
     };
 }
 
