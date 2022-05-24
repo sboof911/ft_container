@@ -108,7 +108,7 @@ class   vector
 
         iterator    begin() {return (iterator(&arg[0]));};
         
-        iterator    end() {return (iterator(&arg[vector_size - 1]));};
+        iterator    end() {return (iterator(&arg[vector_size]));};
 
 //**********************************************             CAPACITY                       **********************************************
 

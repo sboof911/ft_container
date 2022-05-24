@@ -54,6 +54,9 @@ int main ()
   for (ft::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
+  for (int i = 0; i < myvector.size(); i++)
+    std::cout << ' ' << myvector[i];
+  std::cout << '\n';
 
   return 0;
 }
