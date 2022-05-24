@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 20:09:33 by amaach            #+#    #+#             */
-/*   Updated: 2022/05/24 12:08:21 by amaach           ###   ########.fr       */
+/*   Updated: 2022/05/24 18:33:57 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ namespace ft{
         iterator() : _ptr(NULL) {}
         iterator(pointer ptr) : _ptr(ptr) {}
         ~iterator(){}
-        iterator(const iterator& copy)
-        {
-            *this = copy;
-        }
+        iterator(const iterator& copy) { *this = copy;}
+
         iterator &operator=(const iterator &obj)
         {
             this->_ptr = obj._ptr;
@@ -74,73 +72,34 @@ namespace ft{
         }
 
         template <class U>
-        bool operator==(const iterator<U> &obj) const
-        {
-            return (this->_ptr == obj._ptr);
-        }
+        bool operator==(const iterator<U> &obj) const { return (this->_ptr == obj._ptr);}
 
         template <class U>
-        bool operator!=(const iterator<U> &obj) const
-        {
-            return (this->_ptr != obj._ptr);
-        }
+        bool operator!=(const iterator<U> &obj) const { return (this->_ptr != obj._ptr);}
 
         template <class U>
-        bool operator<=(const iterator<U> &obj) const
-        {
-            return (this->_ptr <= obj._ptr);
-        }
+        bool operator<=(const iterator<U> &obj) const { return (this->_ptr <= obj._ptr);}
 
         template <class U>
-        bool operator<(const iterator<U> &obj) const
-        {
-            return (this->_ptr < obj._ptr);
-        }
+        bool operator<(const iterator<U> &obj) const { return (this->_ptr < obj._ptr);}
 
         template <class U>
-        bool operator>(const iterator<U> &obj) const
-        {
-            return (this->_ptr > obj._ptr);
-        }
+        bool operator>(const iterator<U> &obj) const { return (this->_ptr > obj._ptr);}
 
         template <class U>
-        bool operator>=(const iterator<U> &obj) const
-        {
-            return (this->_ptr >= obj._ptr);
-        }
-        // operator - returns distance between two iterators
-        difference_type operator-(const iterator &obj) const
-        {
-            //number of cases betwen to cases;
-            return (this->_ptr - obj._ptr);
-        }
+        bool operator>=(const iterator<U> &obj) const { return (this->_ptr >= obj._ptr);}
+        
+        difference_type operator-(const iterator &obj) const { return (this->_ptr - obj._ptr);}
    
-        reference operator*()
-        {
-            //return the value of the adresse pointed
-            return *this->_ptr;
-        }
+        reference operator*() { return *this->_ptr;}
       
-        pointer operator->() const
-        {
-            //  returns the address of the object
-            return this->_ptr; 
-        }
+        pointer operator->() const { return this->_ptr;}
 
-        iterator operator+(difference_type n) const
-        {
-            return this->_ptr + n;
-        }
+        iterator operator+(difference_type n) const { return this->_ptr + n;}
     
-        iterator operator-(difference_type n) const
-        {
-            return this->_ptr - n;
-        }
+        iterator operator-(difference_type n) const { return this->_ptr - n;}
 
-        reference operator[](int n) const
-        {
-            return this->_ptr[n];
-        }
+        reference operator[](int n) const { return this->_ptr[n];}
 
         iterator &operator+=(int n)
         {

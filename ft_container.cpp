@@ -44,19 +44,17 @@
 //   // return 0;
 // }
 
-int main ()
-{
+int main () {
   ft::vector<int> myvector;
-  for (int i=1; i<=5; i++) myvector.push_back(i);
+  for (int i=0; i<10; i++) myvector.push_back(i);	// myvector: 0 1 2 3 4 5 6 7 8 9
 
-  std::cout << "myvector contains:";
-  std::cout << "begin = " << *myvector.begin() << " and end = " << *myvector.end() << std::endl;
-  for (ft::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
-  for (int i = 0; i < myvector.size(); i++)
-    std::cout << ' ' << myvector[i];
-  std::cout << '\n';
+  typedef ft::vector<int>::iterator iter_type;
+
+  ft::reverse_iterator<iter_type> rev_iterator;
+
+  rev_iterator = myvector.rend();
+
+  std::cout << "myvector.rend()-3 points to: " << *rev_iterator << '\n';
 
   return 0;
 }

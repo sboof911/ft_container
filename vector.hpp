@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include "iterator.hpp"
 #include "iterator_traits.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -29,19 +30,21 @@ class   vector
 
 
     public :
-        typedef T                                        value_type;
-        typedef Alloc                                    allocator_type;
-        typedef typename allocator_type::reference       reference;
-        typedef typename allocator_type::const_reference const_reference;
-        typedef typename allocator_type::size_type       size_type;
-        typedef typename allocator_type::pointer         pointer;
-        typedef typename allocator_type::const_pointer   const_pointer;
-        typedef typename ft::iterator<value_type>        iterator;
-        typedef typename ft::iterator<const value_type>  const_iterator;
+        typedef T                                                   value_type;
+        typedef Alloc                                               allocator_type;
+        typedef typename allocator_type::reference                  reference;
+        typedef typename allocator_type::const_reference            const_reference;
+        typedef typename allocator_type::size_type                  size_type;
+        typedef typename allocator_type::pointer                    pointer;
+        typedef typename allocator_type::const_pointer              const_pointer;
+        typedef typename ft::iterator<value_type>                   iterator;
+        typedef typename ft::iterator<const value_type>             const_iterator;
+        typedef typename ft::reverse_iterator<value_type>           reverse_iterator;
+        typedef typename ft::reverse_iterator<const value_type>     const_reverse_iterator;
 
     protected :
         allocator_type      myAlloc;
-        value_type*         arg;
+        value_type*         container;
         size_type           vector_size;
         size_type           vector_capacity;
 
@@ -66,15 +69,15 @@ class   vector
 //**********************************************             MEMBER FUNCTIONS               **********************************************
 
 
-        vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), arg(NULL), vector_size(0), vector_capacity(0){};
+        vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), container(NULL), vector_size(0), vector_capacity(0){};
         
         vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : vector_size(n), myAlloc(alloc), vector_capacity(n)
         {
-            arg = myAlloc.allocate(vector_size);
+            container = myAlloc.allocate(vector_size);
             // check for the memory with exceptions
             for (size_type i = 0; i < vector_size; i++)
             {
-                myAlloc.construct(&arg[i], val);
+                myAlloc.construct(&container[i], val);
             }
         };
 
@@ -84,7 +87,7 @@ class   vector
         {
             if (vector_capacity > 0)
             {
-                myAlloc.deallocate(arg, vector_capacity);
+                myAlloc.deallocate(container, vector_capacity);
             }
         };
 
@@ -93,29 +96,34 @@ class   vector
             if (vector_capacity)
             {
                 clear();
-                myAlloc.deallocate(arg, vector_capacity);
+                myAlloc.deallocate(container, vector_capacity);
             }
             this->myAlloc = x.myAlloc;
             this->vector_size = x.vector_size;
             this->vector_capacity = x.vector_capacity;
-            arg = myAlloc.allocate(vector_capacity);
+            container = myAlloc.allocate(vector_capacity);
             for(int i = 0; i < vector_size; i++)
-                this->arg[i] = x.arg[i];
+                this->container[i] = x.container[i];
             return (*this);
         };
 
 //**********************************************             ITERATORS                      **********************************************
 
-        iterator    begin() {return (iterator(&arg[0]));};
+        iterator    begin() {return (iterator(&container[0]));};
         
-        iterator    end() {return (iterator(&arg[vector_size]));};
+        iterator    end() {return (iterator(&container[vector_size]));};
+
+        reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
+        reverse_iterator    rend() {return (reverse_iterator(&container[0]));};
+        reverse_iterator    rbegin() const {return (const_reverse_iterator(&container[vector_size]));};
+        reverse_iterator    rend() const {return (const_reverse_iterator(&container[0]));};
 
 //**********************************************             CAPACITY                       **********************************************
 
                                                 
         size_type      size() const {return vector_size;};
 
-        size_type      max_size() const {};
+        size_type      max_size() const {return myAlloc.max_size();};
 
         void        resize (size_type n, value_type val = value_type())
         {
@@ -125,7 +133,7 @@ class   vector
                 {
                     for (size_type i = vector_size; i < n; i++)
                     {
-                        myAlloc.construct(&arg[i], val);
+                        myAlloc.construct(&container[i], val);
                         vector_size = i;
                     }
                 }
@@ -133,7 +141,7 @@ class   vector
                 {
                     for (size_type i = vector_size; i > n; i--)
                     {
-                        myAlloc.destroy(&arg[i]);
+                        myAlloc.destroy(&container[i]);
                         vector_size = i;
                     }
                 }
@@ -146,15 +154,15 @@ class   vector
                 if (vector_capacity)
                 {
                     clear();
-                    myAlloc.deallocate(arg, vector_capacity);
+                    myAlloc.deallocate(container, vector_capacity);
                 }
                 vector_size = n;
                 vector_capacity = _get_capacity_bit(n);
-                arg = myAlloc.allocate(vector_capacity);
+                container = myAlloc.allocate(vector_capacity);
                 for (size_type i = 0; i < help.size(); i++)
-                    myAlloc.construct(&arg[i], help.arg[i]);
+                    myAlloc.construct(&container[i], help.container[i]);
                 for(size_type i = help.size(); i < n; i++)
-                    myAlloc.construct(&arg[i], val);
+                    myAlloc.construct(&container[i], val);
             }
         };
 
@@ -168,13 +176,13 @@ class   vector
                 if (vector_capacity)
                 {
                     clear();
-                    myAlloc.deallocate(arg, vector_capacity);
+                    myAlloc.deallocate(container, vector_capacity);
                 }
                 vector_capacity = n;
                 vector_size = help.size();
-                arg = myAlloc.allocate(vector_capacity);
+                container = myAlloc.allocate(vector_capacity);
                 for(size_type i = 0; i < vector_size; i++)
-                    myAlloc.construct(&arg[i], help.arg[i]);
+                    myAlloc.construct(&container[i], help.container[i]);
             }
             // else throw exeption
         };
@@ -197,46 +205,46 @@ class   vector
 
         reference operator[](size_t index)
         {
-                return arg[index];
+                return container[index];
         };
         
         const_reference operator[] (size_type n) const
         {
-                return arg[index];
+                return container[index];
         };
         
         reference at (size_type n)
         {
             if (n >= vector_size)
                 throw out_of_range();
-            return arg[n];
+            return container[n];
         };
         
         const_reference at (size_type n) const
         {
             if (n >= vector_size)
                 throw out_of_range();
-            return arg[n];
+            return container[n];
         };
         
         reference front()
         {
-            return (arg[0]);
+            return (container[0]);
         };
         
         const_reference front() const
         {
-            return (arg[0]);
+            return (container[0]);
         };
         
         reference back()
         {
-            return (arg[vector_size - 1]);
+            return (container[vector_size - 1]);
         };
         
         const_reference back() const
         {
-            return (arg[vector_size - 1]);
+            return (container[vector_size - 1]);
         };
 
 
@@ -247,20 +255,20 @@ class   vector
             if (vector_capacity)
             {
                 clear();
-                myAlloc.deallocate(arg, vector_capacity);
+                myAlloc.deallocate(container, vector_capacity);
             }
             vector_capacity = n;
             vector_size = n;
-            arg = myAlloc.allocate(vector_capacity);
+            container = myAlloc.allocate(vector_capacity);
             for(size_type i = 0; i < vector_size; i++)
-                myAlloc.construct(&arg[i], val);
+                myAlloc.construct(&container[i], val);
         };
         
         void        push_back (const value_type& val)
         {
             if (vector_capacity > vector_size)
             {
-                arg[vector_size] = val;
+                container[vector_size] = val;
                 vector_size++;
             }
             else
@@ -275,19 +283,19 @@ class   vector
             if (vector_capacity)
             {
                 clear();
-                myAlloc.deallocate(arg, vector_capacity);
+                myAlloc.deallocate(container, vector_capacity);
             }
             vector_capacity = help.vector_capacity;
             vector_size = help.vector_size--;
-            arg = myAlloc.allocate(vector_capacity);
+            container = myAlloc.allocate(vector_capacity);
             for(size_type i = 0; i < vector_size; i++)
-                arg[i] = help.arg[i];
+                container[i] = help.container[i];
         };
         
         void        clear()
         {
             for(size_type i = 0; i < vector_size; i++)
-                myAlloc.destroy(arg + i);
+                myAlloc.destroy(container + i);
             vector_size = 0;
         };
         
