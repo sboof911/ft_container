@@ -39,8 +39,8 @@ class   vector
         typedef typename allocator_type::const_pointer              const_pointer;
         typedef typename ft::iterator<value_type>                   iterator;
         typedef typename ft::iterator<const value_type>             const_iterator;
-        typedef typename ft::reverse_iterator<value_type>           reverse_iterator;
-        typedef typename ft::reverse_iterator<const value_type>     const_reverse_iterator;
+        typedef typename ft::reverse_iterator<iterator>           reverse_iterator;
+        typedef typename ft::reverse_iterator<iterator>     const_reverse_iterator;
 
     protected :
         allocator_type      myAlloc;
@@ -113,10 +113,10 @@ class   vector
         
         iterator    end() {return (iterator(&container[vector_size]));};
 
-        reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
-        reverse_iterator    rend() {return (reverse_iterator(&container[0]));};
-        reverse_iterator    rbegin() const {return (const_reverse_iterator(&container[vector_size]));};
-        reverse_iterator    rend() const {return (const_reverse_iterator(&container[0]));};
+        // reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
+        ft::reverse_iterator<iterator>    rend() {return (ft::reverse_iterator<iterator>(begin()));};
+        // reverse_iterator    rbegin() const {return (const_reverse_iterator(&container[vector_size]));};
+        // reverse_iterator    rend() const {return (const_reverse_iterator(container));};
 
 //**********************************************             CAPACITY                       **********************************************
 
