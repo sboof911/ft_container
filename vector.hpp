@@ -113,10 +113,10 @@ class   vector
         
         iterator    end() {return (iterator(&container[vector_size]));};
 
-        // reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
-        ft::reverse_iterator<iterator>    rend() {return (ft::reverse_iterator<iterator>(begin()));};
-        // reverse_iterator    rbegin() const {return (const_reverse_iterator(&container[vector_size]));};
-        // reverse_iterator    rend() const {return (const_reverse_iterator(container));};
+        reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
+        reverse_iterator    rend() {return (reverse_iterator(begin()));};
+        reverse_iterator    rbegin() const {return (const_reverse_iterator(&container[vector_size]));};
+        reverse_iterator    rend() const {return (const_reverse_iterator(container));};
 
 //**********************************************             CAPACITY                       **********************************************
 
@@ -190,7 +190,6 @@ class   vector
         size_type   capacity() const { return (vector_capacity);};
         
         bool        empty() const { return (vector_size == 0 ? true : false);};
-
 
 //**********************************************             ELEMENT ACCESS                 **********************************************
         

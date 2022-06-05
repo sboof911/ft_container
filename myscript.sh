@@ -7,7 +7,7 @@ if [ -z "$1"]
 then
     echo "                      $(tput setaf 3) THIS SCRIPT PUSH UR FOLDER TO UR GIT"
     echo "$(tput setaf 1)use this command : sh myscript.sh $(tput setaf 6)[PATH OF DIRECTORY] [TIME TO SLEEP WITH MIN] [COMMENT](optionnel)"
-    exit
+    exitƒ
 elif [ -n "$var" ]
 then
     comment=$var

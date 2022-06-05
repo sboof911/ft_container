@@ -44,17 +44,20 @@
 //   // return 0;
 // }
 
-int main () {
-  ft::vector<int> myvector;
-  for (int i=0; i<10; i++) myvector.push_back(i);	// myvector: 0 1 2 3 4 5 6 7 8 9
+int main ()
+{
+  ft::vector<int> myvector (5);  // 5 default-constructed ints
 
-  typedef ft::vector<int>::iterator iter_type;
+  int i=0;
 
-  ft::reverse_iterator<iter_type> rev_iterator;
+  ft::vector<int>::iterator rit = myvector.begin();
+  for (; rit!= myvector.end(); ++rit)
+    *rit = ++i;
 
-  rev_iterator = myvector.rend();
-
-  std::cout << "myvector.rend()-3 points to: " << *rev_iterator << '\n';
+  std::cout << "myvector contains:";
+  for (ft::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
+    std::cout << ' ' << *it;
+  std::cout << '\n';
 
   return 0;
 }
