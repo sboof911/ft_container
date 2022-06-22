@@ -22,12 +22,5 @@ do
     git commit -m $comment
     git push
 
-    declare i=0
-    while [i < 10]
-    do
-        declare j=$Time-i*$Time
-        echo "$(tput setaf 3)Waking up in $j"
-        sleep $Time/10
-        i++
-    done
+    sleep $Time
 done
