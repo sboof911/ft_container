@@ -110,8 +110,9 @@ class   vector
 //**********************************************             ITERATORS                      **********************************************
 
         iterator    begin() {return (iterator(&container[0]));};
-        
+        iterator    begin() const {return (iterator(&container[0]));};
         iterator    end() {return (iterator(&container[vector_size]));};
+        iterator    end() const {return (iterator(&container[vector_size]));};
 
         reverse_iterator    rbegin() {return (reverse_iterator(&container[vector_size]));};
         reverse_iterator    rend() {return (reverse_iterator(begin()));};
@@ -291,6 +292,105 @@ class   vector
                 container[i] = help.container[i];
         };
         
+        iterator insert (iterator position, const value_type& val)
+        {
+            if (vector_capacity > vector_size)
+            {
+                for (size_type i = vector_size; i > position - begin(); i--)
+                    container[i] = container[i - 1];
+                container[position - begin()] = val;
+                vector_size++;
+                return (position);
+            }
+            else
+            {
+                vector  help;
+
+                help = *this;
+                if (vector_capacity)
+                {
+                    clear();
+                    myAlloc.deallocate(container, vector_capacity);
+                }
+                vector_capacity = help.vector_capacity;
+                vector_size = help.vector_size + 1;
+                container = myAlloc.allocate(vector_capacity);
+                for(size_type i = 0; i < position - begin(); i++)
+                    myAlloc.construct(&container[i], help.container[i]);
+                myAlloc.construct(&container[position - begin()], val);
+                for(size_type i = position - begin() + 1; i < vector_size; i++)
+                    myAlloc.construct(&container[i], help.container[i - 1]);
+                return (iterator(&container[position - begin()]));
+            }
+        };
+
+        void insert (iterator position, size_type n, const value_type& val)
+        {
+            if (vector_capacity > vector_size)
+            {
+                for (size_type i = vector_size; i > position - begin(); i--)
+                    container[i] = container[i - 1];
+                for (size_type i = position - begin(); i < vector_size + n; i++)
+                    container[i] = val;
+                vector_size += n;
+            }
+            else
+            {
+                vector  help;
+
+                help = *this;
+                if (vector_capacity)
+                {
+                    clear();
+                    myAlloc.deallocate(container, vector_capacity);
+                }
+                vector_capacity = help.vector_capacity;
+                vector_size = help.vector_size + n;
+                container = myAlloc.allocate(vector_capacity);
+                for(size_type i = 0; i < position - begin(); i++)
+                    myAlloc.construct(&container[i], help.container[i]);
+                for(size_type i = position - begin(); i < vector_size; i++)
+                    myAlloc.construct(&container[i], val);
+                for(size_type i = position - begin() + n; i < vector_size; i++)
+                    myAlloc.construct(&container[i], help.container[i - n]);
+            }
+        };
+        template <class InputIterator>
+        {
+            public :
+            void insert (iterator position, InputIterator first, InputIterator last)
+            {
+                if (vector_capacity > vector_size)
+                {
+                    for (size_type i = vector_size; i > position - begin(); i--)
+                        container[i] = container[i - 1];
+                    for (size_type i = position - begin(); first != last; i++, first++)
+                        container[i] = *first;
+                    vector_size += last - first;
+                }
+                else
+                {
+                    vector  help;
+
+                    help = *this;
+                    if (vector_capacity)
+                    {
+                        clear();
+                        myAlloc.deallocate(container, vector_capacity);
+                    }
+                    vector_capacity = help.vector_capacity;
+                    vector_size = help.vector_size + last - first;
+                    container = myAlloc.allocate(vector_capacity);
+                    for(size_type i = 0; i < position - begin(); i++)
+                        myAlloc.construct(&container[i], help.container[i]);
+                    for(size_type i = position - begin(); first != last; i++, first++)
+                        myAlloc.construct(&container[i], *first);
+                    for(size_type i = position - begin() + last - first; i < vector_size; i++)
+                        myAlloc.construct(&container[i], help.container[i - last + first - begin()]);
+                }
+            }
+        };
+
         void        clear()
         {
             for(size_type i = 0; i < vector_size; i++)
