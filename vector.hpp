@@ -203,14 +203,14 @@ class   vector
               };
         };
 
-        reference operator[](size_t index)
+        reference operator[](size_type n)
         {
-                return container[index];
+                return container[n];
         };
         
         const_reference operator[] (size_type n) const
         {
-                return container[index];
+                return container[n];
         };
         
         reference at (size_type n)
@@ -355,6 +355,7 @@ class   vector
                     myAlloc.construct(&container[i], help.container[i - n]);
             }
         };
+
         template <class InputIterator>
         {
             public :
