@@ -7,7 +7,7 @@ if [ -z "$1"]
 then
     echo "                      $(tput setaf 3) THIS SCRIPT PUSH UR FOLDER TO UR GIT"
     echo "$(tput setaf 1)use this command : sh myscript.sh $(tput setaf 6)[PATH OF DIRECTORY] [TIME TO SLEEP WITH MIN] [COMMENT](optionnel)"
-    exitƒ
+    exit
 elif [ -n "$var" ]
 then
     comment=$var
@@ -17,10 +17,7 @@ fi
 Time=Time*60
 while true
 do
-    if [$1!="."]
-    then
-        cp -rf $1/* .
-    fi
+    cp -rf $1/* .
     git add *
     git commit -m $comment
     git push
