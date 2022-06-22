@@ -17,7 +17,10 @@ fi
 Time=Time*60
 while true
 do
-    cp -rf $1/* .
+    if [$1!="."]
+    then
+        cp -rf $1/* .
+    fi
     git add *
     git commit -m $comment
     git push
