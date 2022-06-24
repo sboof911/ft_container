@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 11:32:49 by ibaali            #+#    #+#             */
-/*   Updated: 2022/06/24 15:14:49 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/24 18:04:02 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
-#include "../vector.hpp"
+#include "../vector/vector.hpp"
 
 #define BLUE "\e[0;34m"
 #define RED "\e[0;31m"
