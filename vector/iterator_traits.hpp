@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 18:18:38 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/01 16:17:28 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/24 22:28:32 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ namespace ft{
         typedef T&                          reference;
         typedef random_access_iterator_tag  iterator_category;
     };
+
 
 };
 #endif

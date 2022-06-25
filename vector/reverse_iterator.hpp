@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:44:22 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/01 18:25:29 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/24 22:21:34 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft{
         reverse_iterator(const reverse_iterator<Iter> &rev_it) : _Iter(rev_it.base()) {}
 
         iterator_type base() const { return _Iter; }
-        
+
         reference operator*() const
         {
             iterator_type tmp = _Iter;
