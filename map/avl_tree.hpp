@@ -15,15 +15,15 @@ namespace ft
     template <typename Pair>
     class Node
     {
-    public:
-        Pair *_data;
-        Node<Pair> *_left;
-        Node<Pair> *_right;
-        Node<Pair> *_parent;
-        int _height;
-        int _balance_factor;
-        Node() {}
-        ~Node() {}
+        public:
+            Pair *_data;
+            Node<Pair> *_left;
+            Node<Pair> *_right;
+            Node<Pair> *_parent;
+            int _height;
+            int _balance_factor;
+            Node() {}
+            ~Node() {}
     };
     template <class U>
     Node<U> *increment(Node<U> *node, Node<U> *root)

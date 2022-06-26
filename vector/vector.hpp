@@ -194,7 +194,7 @@ namespace ft
                   {
                       return ("vector::_M_range_check");
                   };
-            }
+            };
 
             reference operator[](size_type n) { return container[n];}
 
