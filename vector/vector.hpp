@@ -387,6 +387,64 @@ namespace ft
 
             allocator_type get_allocator() const { return (myAlloc);}
     };
+
+//**********************************************      NO MEMBER FUNCTIONS OVERLOAD          **********************************************
+
+    template <class M, class allocc>
+    void swap(vector<M, allocc> &x, vector<M, allocc> &y) { x.swap(y);}
+
+    template <class M, class alocc>
+    bool operator==(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs)
+    {
+        if (lhs.size() != rhs.size())
+            return (false);
+        for (size_t i = 0; i < lhs.size(); i++)
+        {
+            if (lhs[i] != rhs[i])
+                return (false);
+        }
+        return (true);
+    }
+
+    template <class M, class alocc>
+    bool operator!=(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs){ return (!(lhs == rhs));}
+
+    template <class M, class alocc>
+    bool operator<(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs)
+    {
+        if (lhs.size() < rhs.size())
+            return (true);
+        else if (lhs.size() > rhs.size())
+            return (false);
+        size_t i;
+        for (i = 0; i < lhs.size(); i++)
+        {
+            if (lhs[i] < rhs[i])
+                return (true);
+            else if (lhs[i] > rhs[i])
+                return (false);
+        }
+        return (false);
+    }
+
+    template <class M, class alocc>
+    bool operator>(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs){ return (rhs < lhs);}
+
+    template <class M, class alocc>
+    bool operator<=(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs){ return (!(lhs > rhs));}
+
+    template <class M, class alocc>
+    bool operator>=(const ft::vector<M, alocc> &lhs, const ft::vector<M, alocc> &rhs){ return (!(rhs > lhs));}
+}
+
+//**********************************************         RELATIONAL OPERATORS               **********************************************
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const ft::vector<T> &v)
+{
+    for (size_t i = 0; i < v.size(); ++i)
+        os << v[i] << " ";
+    return os;
 }
 
 #endif
