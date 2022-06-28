@@ -10,8 +10,8 @@
 /*                                                                            */
 /* **********************************************             *** */
 
-#ifndef _VECTOR
-#define _VECTOR
+#ifndef _VECTOR_HPP
+#define _VECTOR_HPP
 
 #include <iostream>
 #include <vector>
@@ -79,7 +79,6 @@ namespace ft
             explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : vector_size(n), myAlloc(alloc), vector_capacity(n)
             {
                 container = myAlloc.allocate(vector_size);
-                // check for the memory with exceptions
                 for (size_type i = 0; i < vector_size; i++)
                 {
                     myAlloc.construct(&container[i], val);

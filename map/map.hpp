@@ -2,14 +2,12 @@
 #define _MAP_HPP
 
 #include <iostream>
-#include <memory>
-#include <stack>
-#include <vector>
+#include "avl_tree.hpp"
+#include "bidirectional_iterator.hpp"
+#include "../vector/reverse_iterator.hpp"
+#include "../utils/make_pair.hpp"
 #include "../utils/pair.hpp"
-#include <stack>
-#include <iterator>
-#include <string>
-#include "../vector/iterator_traits.hpp"
+#include "../vector/vector.hpp"
 
 namespace ft
 {
