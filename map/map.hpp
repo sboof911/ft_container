@@ -402,6 +402,11 @@ namespace ft
             return (this->_allocator);
         }
 
+        void print()
+        {
+            _tree.printBT();
+        }
+
     };
     template <class Key, class T, class Compare, class Alloc>
     bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs,

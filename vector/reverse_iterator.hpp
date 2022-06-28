@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:44:22 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/24 22:21:34 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/28 03:35:39 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,6 @@ namespace ft{
         {
             _Iter += n;
             return *this;
-        }
-        operator iterator<const value_type>()
-        {
-            return iterator<const value_type>(_Iter);
         }
     };
     template <class Iterator>
