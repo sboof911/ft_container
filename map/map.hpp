@@ -5,13 +5,11 @@
 #include <memory>
 #include <stack>
 #include <vector>
-//#include "Vector.hpp"
-//#include "stack.hpp"
-#include "pair.hpp"
+#include "../utils/pair.hpp"
 #include <stack>
 #include <iterator>
 #include <string>
-#include "../iterator_traits.hpp"
+#include "../vector/iterator_traits.hpp"
 
 namespace ft
 {
@@ -119,7 +117,6 @@ namespace ft
         {
             ft::pair<key_type, mapped_type> p = ft::make_pair(k, mapped_type());
             _tree.insert(p);
-            // std::cout << "first " << p.first << " second " << p.second << std::endl;
             node_type *node = _tree.search(_tree._root, p.first);
             return (node->_data->second);
         }
@@ -174,7 +171,6 @@ namespace ft
 
         void swap(map &other)
         {
-            // std::swap(_tree, other._tree); // ! time out
             _tree.swap(other._tree);
             std::swap(this->_compare, other._compare);
             std::swap(this->_allocator, other._allocator);
@@ -205,15 +201,10 @@ namespace ft
                 erase(*it);
                 it++;
             }
-            // for (size_type i = 0; i < vect.size(); i++)
-            // {
-            //     erase(vect[i]);
-            // }
         }
 
         pair<iterator, bool> insert(const value_type &val)
         {
-            // ft::pair<key_type, mapped_type> a = ft::make_pair(val.first, val.second);
             node_type *node = _tree.search(_tree._root, val.first);
             if (node)
                 return (pair<iterator, bool>(iterator(node, const_cast<node_type **>(&_tree._root)), false));
@@ -413,33 +404,6 @@ namespace ft
             return (this->_allocator);
         }
 
-        /*              Avl Treee            */
-
-        // void insert(value_type value)
-        // {
-        //     _tree.insert(value);
-        // }
-
-        // void preOrder()
-        // {
-        //     _tree.preOrder(_tree._root);
-        // }
-
-        void print()
-        {
-            _tree.printBT();
-        }
-
-        // void remove(key_type value)
-        // {
-        //     _tree.remove(value);
-        // }
-
-        // node_type* search(key_type x)
-        // {
-        //     node_type* test =  _tree.search(_tree._root, x);
-        //     return (test);
-        // }
     };
     template <class Key, class T, class Compare, class Alloc>
     bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs,
