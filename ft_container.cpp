@@ -654,7 +654,7 @@ int main()
 {
 
 	std::stack<int> s;
-  ft:stack<int> a;
+  	ft:stack<int> a;
 	std::vector<int> b;
 	std::vector<int> c;
 

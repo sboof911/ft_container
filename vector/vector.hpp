@@ -76,7 +76,7 @@ namespace ft
 
             explicit vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), container(NULL), vector_size(0), vector_capacity(0){};
 
-            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : vector_size(n), myAlloc(alloc), vector_capacity(n)
+            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : myAlloc(alloc), vector_size(n), vector_capacity(n)
             {
                 container = myAlloc.allocate(vector_size);
                 for (size_type i = 0; i < vector_size; i++)
@@ -87,7 +87,7 @@ namespace ft
 
             template <class InputIterator>
             vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
-                   typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL) : vector_capacity(0), vector_size(0), container(NULL), myAlloc(alloc)
+                   typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL) : myAlloc(alloc), container(NULL), vector_capacity(0)
             {
                 (void)f;
                 reserve(last - first);
@@ -111,10 +111,9 @@ namespace ft
                     myAlloc.deallocate(container, vector_size);
                 this->vector_size = x.vector_size;
                 this->vector_capacity = x.vector_capacity;
-                this->myAlloc = myAlloc.allocate(this->vector_capacity);
                 container = myAlloc.allocate(vector_capacity);
-                for(int i = 0; i < vector_size; i++)
-                    myAlloc.constuct(&container[i], x.container[i]);
+                for(size_type i = 0; i < vector_size; i++)
+                    myAlloc.construct(&container[i], x.container[i]);
                 return (*this);
             }
 
@@ -125,8 +124,8 @@ namespace ft
             iterator    end() {return (iterator(&container[vector_size]));}
             iterator    end() const {return (iterator(&container[vector_size]));}
 
-            reverse_iterator    rbegin() {return (reverse_iterator(end));}
-            reverse_iterator    rbegin() const {return (const_reverse_iterator(end));}
+            reverse_iterator    rbegin() {return (reverse_iterator(end()));}
+            reverse_iterator    rbegin() const {return (const_reverse_iterator(end()));}
             reverse_iterator    rend() {return (reverse_iterator(begin()));}
             reverse_iterator    rend() const {return (const_reverse_iterator(begin()));}
 
@@ -363,6 +362,23 @@ namespace ft
                     i++;
                 }
                 vector_size += n;
+            }
+
+            iterator erase(iterator pos)
+            {
+                for (size_type i = pos - container; i < vector_size - 1; ++i)
+                    container[i] = container[i + 1];
+                vector_size--;
+                return pos;
+            }
+
+            iterator erase(iterator first, iterator last)
+            {
+                size_type n = last - first;
+                for (size_type i = first - container; i < vector_size - n; ++i)
+                    myAlloc.construct(&container[i] , container[i + n]);
+                vector_size -= n;
+                return first;
             }
 
             void        clear()
