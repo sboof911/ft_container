@@ -203,7 +203,7 @@ namespace ft
                 _tree.insert(*first);
         }
 
-        void clear(){ erase(begin(), end());}
+        void clear(){ _tree.clear();}
 
 //**********************************************                OPERATIONS                  **********************************************
 
