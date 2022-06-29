@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 21:44:22 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/28 03:35:39 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/29 03:02:44 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace ft{
    template <typename T>
     class reverse_iterator 
     {
-    public:                     // CHECK https://www.cplusplus.com/reference/iterator/reverse_iterator/   
+    public:
         typedef T                                                iterator_type;
         typedef typename iterator_traits<T>::iterator_category   iterator_category;
         typedef typename iterator_traits<T>::value_type          value_type;

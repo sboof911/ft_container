@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 01:45:36 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/29 01:45:37 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/29 05:02:03 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ namespace ft
             Node() {}
             ~Node() {}
     };
+
     template <class U>
     Node<U> *increment(Node<U> *node, Node<U> *root)
     {
@@ -95,22 +96,22 @@ namespace ft
     class avl_tree
     {
     public:
-        typedef T mapped_type;
-        typedef Alloc allocator_type;
-        typedef Key key_type;
-        typedef ft::pair<const key_type, mapped_type> value_type;
-        typedef Node<value_type> node_type;
-        typedef typename Alloc::template rebind<node_type>::other node_allocator;
-        typedef ptrdiff_t difference_type;
-        typedef size_t size_type;
-        node_type *_root;
-        typedef bidirectional_iterator<node_type, value_type> iterator;
+        typedef                                                 T mapped_type;
+        typedef                                                 Alloc allocator_type;
+        typedef                                                 Key key_type;
+        typedef                                                 ft::pair<const key_type, mapped_type> value_type;
+        typedef                                                 Node<value_type> node_type;
+        typedef                                                 typename Alloc::template rebind<node_type>::other node_allocator;
+        typedef                                                 ptrdiff_t difference_type;
+        typedef                                                 size_t size_type;
+        node_type                                               *_root;
+        typedef bidirectional_iterator<node_type, value_type>   iterator;
 
     private:
-        size_type _size;
-        Compare _compare;
-        allocator_type _pair_allocator;
-        node_allocator _node_allocator;
+        size_type       _size;
+        Compare         _compare;
+        allocator_type  _pair_allocator;
+        node_allocator  _node_allocator;
 
         bool __exists(node_type *node, key_type k) const
         {
@@ -126,17 +127,11 @@ namespace ft
         }
 
     public:
-        bool exists(key_type elem) const
-        {
-            return (__exists(_root, elem));
-        }
+        bool exists(key_type elem) const{ return (__exists(_root, elem));}
 
         avl_tree() : _root(NULL), _size(0), _compare(), _pair_allocator(), _node_allocator() {}
 
-        avl_tree(const avl_tree &other) : _root(NULL), _size(other._size)
-        {
-            *this = other;
-        }
+        avl_tree(const avl_tree &other) : _root(NULL), _size(other._size){ *this = other;}
 
         avl_tree(const Compare &comp, const allocator_type &alloc) : _root(NULL), _compare(comp), _pair_allocator(alloc), node_allocator(alloc) {}
 
@@ -147,10 +142,8 @@ namespace ft
             copy(tmp);
             return *this;
         }
-        ~avl_tree()
-        {
-            clear();
-        }
+        
+        ~avl_tree(){ clear();}
 
         void clear()
         {
@@ -211,7 +204,9 @@ namespace ft
         {
             return (_compare(keya, keyb) == false && _compare(keyb, keya) == false);
         }
-        /*                 Search                   */
+
+//**********************************************                   SEARCH                   **********************************************
+
         node_type *search(node_type *node, key_type key) const
         {
             if (node == NULL)
@@ -225,9 +220,10 @@ namespace ft
                 else
                     return (search(node->_right, key));
             }
-            // return (NULL);
         }
-        /*                 Insert                   */
+
+//**********************************************                   INSERT                   **********************************************
+
         node_type *newNode(value_type x)
         {
             node_type *tmp = _node_allocator.allocate(1);
@@ -277,7 +273,9 @@ namespace ft
             }
             return (false);
         }
-        /*                 Balance                   */
+        
+//**********************************************                  BALANCE                   **********************************************
+
         node_type *right_rotate(node_type *node)
         {
             node_type *tmp = node->_left;
@@ -298,6 +296,7 @@ namespace ft
             update(tmp);
             return tmp;
         }
+
         node_type *left_rotate(node_type *node)
         {
             node_type *tmp = node->_right;
@@ -371,6 +370,7 @@ namespace ft
                 printTree(node->_right, indent, true);
             }
         }
+
         void preOrder(node_type *root)
         {
             if (root != NULL)
@@ -381,7 +381,6 @@ namespace ft
             }
         }
 
-        // Driver Code
         void print2DUtil(node_type *root, int space)
         {
             // Base case
@@ -441,10 +440,11 @@ namespace ft
         {
             return (this->_size);
         }
-        /*                Remove                   */
+
+//**********************************************                   REMOVE                   **********************************************
+
         node_type *remove(node_type *node, key_type key)
         {
-            // std::cout << "hey\n";
             if (node == NULL)
                 return (NULL);
 
@@ -501,32 +501,20 @@ namespace ft
 
             if (!exists(key))
                 return false;
-            // std::cout << "hey\n";
-
             _root = remove(_root, key);
             _size--;
             return true;
         }
 
-        /*                 help methods                   */
+
+//**********************************************                HELP METHODS                **********************************************
+        
         node_type *max(node_type *node) const
         {
             while (node->_right)
                 node = node->_right;
             return (node);
         }
-
-        // node_tyoe   *lower_bound(node_type *node, key_type  k)
-        // {
-        //     node_type *n = min_node(node);
-        //     while (n)
-        //     {
-        //         if (n->_data->first >= k)
-        //             return (n);
-
-        //     }
-
-        // }
 
         node_type *min(node_type *node) const
         {

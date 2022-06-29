@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 20:09:33 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/29 02:00:03 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/29 03:02:41 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ namespace ft{
         bool operator<(const iterator<U> &obj) const { return (this->_Iter < obj._Iter);}
 
         template <class U>
-        bool operator>(const iterator<U> &obj) const { return (this->_Iter > obj._Iter);}
+        bool operator>=(const iterator<U> &obj) const { return (this->_Iter >= obj._Iter);}
 
         template <class U>
-        bool operator>=(const iterator<U> &obj) const { return (this->_Iter >= obj._Iter);}
+        bool operator>(const iterator<U> &obj) const { return (this->_Iter > obj._Iter);}
         
         difference_type operator-(const iterator &obj) const { return (this->_Iter - obj._Iter);}
    
-        reference operator*() { return *this->_Iter;}
+        reference operator*() const { return *this->_Iter;}
       
         pointer operator->() const { return this->_Iter;}
 

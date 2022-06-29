@@ -14,24 +14,17 @@
 #define _VECTOR_HPP
 
 #include <iostream>
-#include <vector>
-#include <memory>
-#include <cmath>
-#include <stdexcept>
 #include "iterator.hpp"
-#include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
 #include "../utils/enable_if.hpp"
 #include "../utils/is_integral.hpp"
 
 namespace ft
 {
-    template < class T, class Alloc = std::allocator<T> >
-    class   vector
+    template <class T, class Alloc = std::allocator<T> >
+    class vector
     {
-
-
-        public :
+        public:
             typedef T                                                   value_type;
             typedef Alloc                                               allocator_type;
             typedef value_type                                          &reference;
@@ -47,100 +40,114 @@ namespace ft
             typedef typename allocator_type::pointer                    pointer;
             typedef typename allocator_type::const_pointer              const_pointer;
 
-        private :
+        private:
+            size_type       vector_capacity;
+            size_type       vector_size;
+            pointer         container;
+            allocator_type  myAlloc;
 
-            allocator_type      myAlloc;
-            value_type*         container;
-            size_type           vector_size;
-            size_type           vector_capacity;
-
-            size_type _getvector_capacity_bit(size_type n)
+        public:
+            class outofbounds : public std::exception
             {
-                int i = 0;
-                if (n == 0)
-                    return (0);
-                if (n == 1)
-                    return (1);
-                while (1)
-                {
-                    if ((n > pow(2, i) && n <= pow(2, i + 1)))
-                        return (pow(2, i + 1));
-                    i++;
-                }
-            }
-
-        public :
+                public:
+                    const char *what() const throw(){ return ("index outofbounds");}
+            };
 
 //**********************************************             MEMBER FUNCTIONS               **********************************************
 
+            explicit vector(const allocator_type &alloc = allocator_type()) : vector_capacity(0), vector_size(0), container(NULL), myAlloc(alloc) {}
 
-            explicit vector (const allocator_type& alloc = allocator_type()) : myAlloc(alloc), container(NULL), vector_size(0), vector_capacity(0){};
-
-            explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : myAlloc(alloc), vector_size(n), vector_capacity(n)
+            explicit vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : vector_capacity(0), vector_size(0), container(NULL), myAlloc(alloc)
             {
-                container = myAlloc.allocate(vector_size);
-                for (size_type i = 0; i < vector_size; i++)
-                {
+                if (n == 0)
+                    container = NULL;
+                else
+                    container = myAlloc.allocate(n);
+                for (size_type i = 0; i < n; ++i)
                     myAlloc.construct(&container[i], val);
-                }
+                vector_size = n;
+                vector_capacity = n;
             }
 
             template <class InputIterator>
             vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
-                   typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL) : myAlloc(alloc), container(NULL), vector_capacity(0)
+                   typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL) : vector_capacity(0), vector_size(0), container(NULL), myAlloc(alloc)
             {
                 (void)f;
                 reserve(last - first);
                 for (; first != last; first++)
-                    myAlloc.construct(&container[vector_size++], *first);
+                    myAlloc.construct(&container[vector_size++] , *first);
             }
 
-            vector (const vector& x) {*this = x;};
+            vector(const vector &x) : container(NULL), myAlloc(x.myAlloc){ *this = x;}
 
             ~vector()
             {
-                if (vector_capacity > 0)
-                {
-                    myAlloc.deallocate(container, vector_capacity);
-                }
+                for (size_type i = 0; i < vector_size; i++)
+                    myAlloc.destroy(&container[i]);
+                myAlloc.deallocate(container, vector_capacity);
             }
 
-            vector& operator=(const vector& x)
+            vector &operator=(const vector &x)
             {
-                if (vector_size)
+                size_type i;
+                if (vector_size != 0)
                     myAlloc.deallocate(container, vector_size);
-                this->vector_size = x.vector_size;
-                this->vector_capacity = x.vector_capacity;
+                vector_size = x.vector_size;
+                vector_capacity = x.vector_capacity;
                 container = myAlloc.allocate(vector_capacity);
-                for(size_type i = 0; i < vector_size; i++)
+                for (i = 0; i < vector_size; i++)
                     myAlloc.construct(&container[i], x.container[i]);
                 return (*this);
             }
 
 //**********************************************             ITERATORS                      **********************************************
 
-            iterator    begin() {return (iterator(&container[0]));}
-            iterator    begin() const {return (iterator(&container[0]));}
-            iterator    end() {return (iterator(&container[vector_size]));}
-            iterator    end() const {return (iterator(&container[vector_size]));}
+            iterator                    begin() {return (iterator(&container[0]));}
+            const_iterator              begin() const {return (iterator(&container[0]));}
+            iterator                    end() {return (iterator(&container[vector_size]));}
+            const_iterator              end() const {return (iterator(&container[vector_size]));}
 
-            reverse_iterator    rbegin() {return (reverse_iterator(end()));}
-            reverse_iterator    rbegin() const {return (const_reverse_iterator(end()));}
-            reverse_iterator    rend() {return (reverse_iterator(begin()));}
-            reverse_iterator    rend() const {return (const_reverse_iterator(begin()));}
+            reverse_iterator            rbegin() {return (reverse_iterator(end()));}
+            const_reverse_iterator      rbegin() const {return (const_reverse_iterator(end()));}
+            reverse_iterator            rend() {return (reverse_iterator(begin()));}
+            const_reverse_iterator      rend() const {return (const_reverse_iterator(begin()));}
 
 //**********************************************             CAPACITY                       **********************************************
 
+            size_type size() const{ return (vector_size);}
 
-            size_type      size() const {return vector_size;}
+            size_type max_size() const{ return (myAlloc.max_size());}
 
-            size_type      max_size() const {return myAlloc.max_size();}
+            size_type capacity() const{ return (vector_capacity);}
 
-            void        resize (size_type n, value_type val = value_type())
+            bool empty() const
+            {
+                if (vector_size == 0)
+                    return (1);
+                else
+                    return 0;
+            }
+
+            void    reserve (size_type n)
+            {
+                if (n > vector_capacity)
+                {
+                    pointer tmp = container;
+                    container = myAlloc.allocate(n);
+                    if (tmp != NULL)
+                    {
+                        for (size_type i = 0; i < vector_size; i++)
+                            myAlloc.construct(container + i, tmp[i]);
+                        myAlloc.deallocate(tmp, vector_capacity);
+                    }
+                    vector_capacity = n;
+                }
+            }
+            void resize(size_type n, value_type val = value_type())
             {
                 size_type i;
                 pointer tmp;
-
                 tmp = container;
                 if (n < vector_size)
                 {
@@ -162,37 +169,7 @@ namespace ft
                         push_back(val);
             }
 
-            void        reserve (size_type n)
-            {
-                if (n > vector_capacity)
-                {
-                    vector   help;
-
-                    help = *this;
-                    if (vector_capacity)
-                        myAlloc.deallocate(container, vector_capacity);
-                    vector_capacity = n;
-                    vector_size = help.size();
-                    container = myAlloc.allocate(vector_capacity);
-                    for(size_type i = 0; i < vector_size; i++)
-                        myAlloc.construct(&container[i], help.container[i]);
-                }
-            }
-
-            size_type   capacity() const { return (vector_capacity);};
-
-            bool        empty() const { return (vector_size == 0 ? true : false);};
-
 //**********************************************             ELEMENT ACCESS                 **********************************************
-
-            class out_of_range : public std::exception
-            {
-                public:
-                  virtual const char* what() const throw()
-                  {
-                      return ("vector::_M_range_check");
-                  };
-            };
 
             reference operator[](size_type n) { return container[n];}
 
@@ -201,14 +178,14 @@ namespace ft
             reference at (size_type n)
             {
                 if (n >= vector_size)
-                    throw out_of_range();
+                    throw std::out_of_range("vector");
                 return container[n];
             }
 
             const_reference at (size_type n) const
             {
                 if (n >= vector_size)
-                    throw out_of_range();
+                    throw std::out_of_range("vector");
                 return container[n];
             }
 
@@ -222,18 +199,51 @@ namespace ft
 
 //**********************************************             MODIFIERS                      **********************************************
 
-            void assign (size_type n, const value_type& val)
+            void clear()
             {
-                if (vector_capacity)
+                for (size_type i = 0; i < vector_size; i++)
+                    myAlloc.destroy(&container[i]);
+                vector_size = 0;
+            }
+
+            void swap(vector &x)
+            {
+                pointer tmp = container;
+                size_type   tmp_size = vector_size;
+                size_type   tmp_capacity = vector_capacity;
+
+                container = x.container;
+                vector_size = x.vector_size;
+                vector_capacity = x.vector_capacity;
+
+                x.container = tmp;
+                x.vector_size = tmp_size;
+                x.vector_capacity = tmp_capacity;
+            }
+
+            void push_back(const value_type &val)
+            {
+                if (vector_size == 0)
+                    reserve(1);
+                else if (vector_size == vector_capacity)
+                    reserve(vector_capacity * 2);
+                myAlloc.construct(container + vector_size, val);
+                vector_size++;
+            }
+
+            void pop_back(){myAlloc.destroy(&container[vector_size--]);}
+
+            void assign(size_type n, const T &x)
+            {
+                if (n > vector_capacity)
                 {
-                    clear();
                     myAlloc.deallocate(container, vector_capacity);
+                    container = myAlloc.allocate(n);
+                    vector_capacity = n;
                 }
-                vector_capacity = n;
+                for (size_type i = 0; i < n; ++i)
+                    myAlloc.construct(&container[i] , x);
                 vector_size = n;
-                container = myAlloc.allocate(vector_capacity);
-                for(size_type i = 0; i < vector_size; i++)
-                    myAlloc.construct(&container[i], val);
             }
 
             template <class InputIterator>
@@ -241,7 +251,7 @@ namespace ft
                         typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL)
             {
                 (void)f;
-                size_type   n = last - first;
+                size_type n = last - first;
 
                 if (n > vector_capacity)
                 {
@@ -249,28 +259,33 @@ namespace ft
                     container = myAlloc.allocate(n);
                     vector_capacity = n;
                 }
-                for(size_type i = 0; i < n; ++i)
-                    myAlloc.construct(&container[i], *first++);
+                for (size_type i = 0; i < n; ++i)
+                    myAlloc.construct(&container[i] , *first++);
                 vector_size = n;
             }
 
-            void        push_back (const value_type& val)
+            iterator erase(iterator pos)
             {
-                if (vector_capacity > vector_size)
-                {
-                    container[vector_size] = val;
-                    vector_size++;
-                }
-                else
-                    resize(vector_size + 1, val);
+                for (size_type i = pos - container; i < vector_size - 1; ++i)
+                    container[i] = container[i + 1];
+                vector_size--;
+                return pos;
             }
 
-            void        pop_back() { myAlloc.destroy(&container[vector_size--]);}
+            iterator erase(iterator first, iterator last)
+            {
+                size_type n = last - first;
+
+                for (size_type i = first - container; i < vector_size - n; ++i)
+                    myAlloc.construct(&container[i] , container[i + n]);
+                vector_size -= n;
+                return first;
+            }
 
             iterator insert (iterator position, const value_type& val)
             {
                 size_type i = 0;
-                size_type o = position - begin();
+                size_type pos = position - begin();
 
                 if (vector_size == 0)
                     push_back(val);
@@ -280,7 +295,7 @@ namespace ft
                         reserve(vector_capacity * 2);
                     while (vector_size - i + 1 > 0)
                     {
-                        if (vector_size - i == o)
+                        if (vector_size - i == pos)
                         {
                             myAlloc.construct(&container[vector_size - i] , val);
                             break;
@@ -291,12 +306,12 @@ namespace ft
                     }
                     vector_size++;
                 }
-                return (container + o);
+                return (container + pos);
             }
 
             void insert (iterator position, size_type n, const value_type& val)
             {
-                size_type o = position - this->begin();
+                size_type pos = position - this->begin();
                 size_type i = 0;
                 size_type k = n;
                 if (vector_size + n > vector_capacity)
@@ -309,7 +324,7 @@ namespace ft
                 }
                 while (vector_size - i + n > 0)
                 {
-                    if (vector_size - i == o)
+                    if (vector_size - i == pos)
                     {
                         while (k--)
                             myAlloc.construct(&container[vector_size - i + k] , val);
@@ -324,7 +339,7 @@ namespace ft
 
             template <class InputIterator>
             void insert(iterator position, InputIterator first, InputIterator last,
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL)
+                        typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type *f = NULL)
             {
                 (void)f;
                 size_type n = std::distance(first, last);
@@ -358,49 +373,16 @@ namespace ft
                         break;
                     }
                     else
-                        myAlloc.construct(&container[vector_size - i + n - 1] , container[vector_size - i - 1]);
+                        myAlloc.construct(&container[vector_size - i + n - 1] ,  container[vector_size - i - 1]);
                     i++;
                 }
                 vector_size += n;
             }
 
-            iterator erase(iterator pos)
-            {
-                for (size_type i = pos - container; i < vector_size - 1; ++i)
-                    container[i] = container[i + 1];
-                vector_size--;
-                return pos;
-            }
-
-            iterator erase(iterator first, iterator last)
-            {
-                size_type n = last - first;
-                for (size_type i = first - container; i < vector_size - n; ++i)
-                    myAlloc.construct(&container[i] , container[i + n]);
-                vector_size -= n;
-                return first;
-            }
-
-            void        clear()
-            {
-                for(size_type i = 0; i < vector_size; i++)
-                    myAlloc.destroy(container + i);
-                vector_size = 0;
-            }
-
-            void        swap (vector& x)
-            {
-                vector help;
-
-                help = *this;
-                *this = x;
-                x = help;
-            }
-
-
 //**********************************************             ALLOCATE                       **********************************************
 
             allocator_type get_allocator() const { return (myAlloc);}
+
     };
 
 //**********************************************      NO MEMBER FUNCTIONS OVERLOAD          **********************************************
