@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:54:38 by amaach            #+#    #+#             */
-/*   Updated: 2022/06/28 18:00:27 by amaach           ###   ########.fr       */
+/*   Updated: 2022/06/29 05:15:36 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,34 +46,21 @@ namespace ft
         size_type size() const { return _container.size(); }
 
         template <class stack_type, class container_type>
-        friend bool operator==(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container == rhs._container;
-        }
+        friend bool operator==(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container == rhs._container;}
+
         template <class stack_type, class container_type>
-        friend bool operator!=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container != rhs._container;
-        }
+        friend bool operator!=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container != rhs._container;}
+
         template <class stack_type, class container_type>
-        friend bool operator>(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container > rhs._container;
-        }
+        friend bool operator>(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container > rhs._container;}
+
         template <class stack_type, class container_type>
-        friend bool operator<(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container < rhs._container;
-        }
+        friend bool operator<(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container < rhs._container;}
+
         template <class stack_type, class container_type>
-        friend bool operator>=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container >= rhs._container;
-        }
+        friend bool operator>=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container >= rhs._container;}
+
         template <class stack_type, class container_type>
-        friend bool operator<=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs)
-        {
-            return lhs._container <= rhs._container;
-        }
+        friend bool operator<=(const stack<stack_type, container_type> &lhs, const stack<stack_type, container_type> &rhs){ return lhs._container <= rhs._container;}
     };
 }

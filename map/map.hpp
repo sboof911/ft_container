@@ -12,31 +12,31 @@
 namespace ft
 {
 
-    template <class Key,                                           // map::key_type
-              class T,                                             // map::mapped_type
-              class Compare = std::less<Key>,                      // map::key_compare
-              class Alloc = std::allocator<ft::pair<const Key, T> > // map::allocator_type
+    template <class Key,
+              class T,
+              class Compare = std::less<Key>,
+              class Alloc = std::allocator<ft::pair<const Key, T> >
               >
     class map
     {
     public:
-        typedef Key key_type;
-        typedef T mapped_type;
-        typedef typename ft::pair<const key_type, mapped_type> value_type;
-        typedef Compare key_compare;
-        typedef Alloc allocator_type;
-        typedef typename allocator_type::reference reference;
-        typedef typename allocator_type::const_reference const_reference;
-        typedef typename allocator_type::pointer pointer;
-        typedef typename allocator_type::const_pointer const_pointer;
-        typedef typename allocator_type::size_type size_type;
+        typedef Key                                                     key_type;
+        typedef T                                                       mapped_type;
+        typedef typename ft::pair<const key_type, mapped_type>          value_type;
+        typedef Compare                                                 key_compare;
+        typedef Alloc                                                   allocator_type;
+        typedef typename allocator_type::reference                      reference;
+        typedef typename allocator_type::const_reference                const_reference;
+        typedef typename allocator_type::pointer                        pointer;
+        typedef typename allocator_type::const_pointer                  const_pointer;
+        typedef typename allocator_type::size_type                      size_type;
         typedef typename ft::avl_tree<Key, mapped_type, Compare, Alloc> tree;
-        typedef ft::Node<value_type> node_type;
-        typedef ft::bidirectional_iterator<node_type, value_type> iterator;
+        typedef ft::Node<value_type>                                    node_type;
+        typedef ft::bidirectional_iterator<node_type, value_type>       iterator;
         typedef ft::const_bidirectional_iterator<node_type, value_type> const_iterator;
-        typedef ft::reverse_iterator<iterator> reverse_iterator;
-        typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-        typedef ptrdiff_t difference_type;
+        typedef ft::reverse_iterator<iterator>                          reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
+        typedef ptrdiff_t                                               difference_type;
         typedef class value_compare : public std::binary_function<value_type, value_type, bool>
         {
         protected:
@@ -75,14 +75,9 @@ namespace ft
             }
         }
 
-        map(const map &x)
-        {
-            *this = x;
-        }
+        map(const map &x){ *this = x;}
 
-        ~map()
-        {
-        }
+        ~map(){}
 
         map &operator=(const map &other)
         {
@@ -94,22 +89,16 @@ namespace ft
             }
             return *this;
         }
-        /*              capacity            */
-        bool empty() const
-        {
-            return (_tree.empty());
-        }
 
-        size_type size() const
-        {
-            return (_tree.size());
-        }
+//**********************************************                  CAPACITY                  **********************************************
+        
+        bool empty() const{ return (_tree.empty());}
 
-        size_type max_size() const
-        {
-            return (this->_allocator.max_size());
-        }
-        /*              Element access            */
+        size_type size() const{ return (_tree.size());}
+
+        size_type max_size() const{ return (this->_allocator.max_size());}
+
+//**********************************************               ELEMENT ACCESS               **********************************************
 
         mapped_type &operator[](const key_type &k)
         {
@@ -119,7 +108,7 @@ namespace ft
             return (node->_data->second);
         }
 
-        /*             iterators            */
+//**********************************************                 ITERATORS                  **********************************************
 
         iterator begin()
         {
@@ -127,10 +116,7 @@ namespace ft
             return (iterator(tmp, const_cast<node_type **>(&_tree._root)));
         }
 
-        iterator end()
-        {
-            return iterator(NULL, const_cast<node_type **>(&_tree._root));
-        }
+        iterator end(){ return iterator(NULL, const_cast<node_type **>(&_tree._root));}
 
         const_iterator begin() const
         {
@@ -138,15 +124,9 @@ namespace ft
             return (const_iterator(tmp, const_cast<node_type **>(&_tree._root)));
         }
 
-        const_iterator end() const
-        {
-            return const_iterator(NULL, const_cast<node_type **>(&_tree._root));
-        }
+        const_iterator end() const{ return const_iterator(NULL, const_cast<node_type **>(&_tree._root));}
 
-        reverse_iterator rbegin()
-        {
-            return (reverse_iterator(end()));
-        }
+        reverse_iterator rbegin(){ return (reverse_iterator(end()));}
 
         const_reverse_iterator rbegin() const
         {
@@ -154,10 +134,7 @@ namespace ft
             return (tmp);
         }
 
-        reverse_iterator rend()
-        {
-            return (reverse_iterator(begin()));
-        }
+        reverse_iterator rend(){ return (reverse_iterator(begin()));}
 
         const_reverse_iterator rend() const
         {
@@ -165,7 +142,7 @@ namespace ft
             return (tmp);
         }
 
-        /*             modifiers            */
+//**********************************************                 MODIFIERS                  **********************************************
 
         void swap(map &other)
         {
@@ -180,10 +157,7 @@ namespace ft
             _tree.remove(a.first);
         }
 
-        size_type erase(const key_type &k)
-        {
-            return (_tree.remove(k));
-        }
+        size_type erase(const key_type &k){ return (_tree.remove(k));}
 
         void erase(iterator first, iterator last)
         {
@@ -229,11 +203,9 @@ namespace ft
                 _tree.insert(*first);
         }
 
-        void clear()
-        {
-            erase(begin(), end());
-        }
-        /*              Operations            */
+        void clear(){ erase(begin(), end());}
+
+//**********************************************                OPERATIONS                  **********************************************
 
         iterator find(const key_type &k)
         {
@@ -384,30 +356,23 @@ namespace ft
             return (tmp);
         }
 
-        /*              Observers            */
+//**********************************************                 OBSERVERS                  **********************************************
 
-        key_compare key_comp() const
-        {
-            return this->_compare;
-        }
+        key_compare key_comp() const{ return this->_compare;}
 
-        value_compare value_comp() const
-        {
-            return value_compare(_compare);
-        }
-        /*              Allocator            */
+        value_compare value_comp() const{ return value_compare(_compare);}
 
-        allocator_type get_allocator() const
-        {
-            return (this->_allocator);
-        }
+//**********************************************                 ALLOCATOR                  **********************************************
 
-        void print()
-        {
-            _tree.printBT();
-        }
+        allocator_type get_allocator() const{ return (this->_allocator);}
+
+        void print(){ _tree.printBT();}
 
     };
+
+//**********************************************      NO MEMBER FUNCTIONS OVERLOAD          **********************************************
+
+
     template <class Key, class T, class Compare, class Alloc>
     bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs,
                     const ft::map<Key, T, Compare, Alloc> &rhs)
